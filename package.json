@@ -1,0 +1,22 @@
+{
+  "name": "pi-apply-patch",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tanishqkancharla/pi-apply-patch.git"
+  },
+  "homepage": "https://github.com/tanishqkancharla/pi-apply-patch#readme",
+  "keywords": [
+    "pi-package"
+  ],
+  "pi": {
+    "extensions": [
+      "./extensions"
+    ]
+  },
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*"
+  }
+}
