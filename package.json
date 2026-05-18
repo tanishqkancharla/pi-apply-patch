@@ -1,15 +1,32 @@
 {
   "name": "pi-apply-patch",
   "version": "0.1.0",
-  "private": true,
+  "description": "Pi extension that adds a Codex-style apply_patch tool and model-aware edit/apply_patch switching",
   "type": "module",
+  "main": "extensions/index.ts",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "test": "npm run typecheck"
+  },
+  "files": [
+    "extensions",
+    "src",
+    "README.md"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/tanishqkancharla/pi-apply-patch.git"
   },
   "homepage": "https://github.com/tanishqkancharla/pi-apply-patch#readme",
+  "bugs": {
+    "url": "https://github.com/tanishqkancharla/pi-apply-patch/issues"
+  },
+  "license": "MIT",
   "keywords": [
-    "pi-package"
+    "pi-package",
+    "pi-extension",
+    "apply-patch",
+    "codex"
   ],
   "pi": {
     "extensions": [
@@ -17,6 +34,11 @@
     ]
   },
   "peerDependencies": {
-    "@earendil-works/pi-coding-agent": "*"
+    "@earendil-works/pi-coding-agent": ">=0.74.0"
+  },
+  "devDependencies": {
+    "@earendil-works/pi-coding-agent": "^0.75.3",
+    "@types/node": "^22.19.19",
+    "typescript": "^6.0.3"
   }
 }

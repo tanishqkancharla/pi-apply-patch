@@ -77,6 +77,10 @@ function getPatchText(args: Record<string, unknown> | undefined): string {
   return "";
 }
 
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
 function prefersApplyPatch(modelId: string | undefined): boolean {
   const id = modelId?.toLowerCase() ?? "";
   return (
@@ -88,12 +92,24 @@ function prefersApplyPatch(modelId: string | undefined): boolean {
   );
 }
 
+function toolName(
+  tool: string | { name?: string } | undefined,
+): string | undefined {
+  if (typeof tool === "string") return tool;
+  return tool?.name;
+}
+
 function syncToolsForModel(
   pi: ExtensionAPI,
   modelId: string | undefined,
 ): void {
   const allToolNames = new Set(pi.getAllTools().map((tool) => tool.name));
-  const activeToolNames = new Set(pi.getActiveTools().map((tool) => tool.name));
+  const activeToolNames = new Set(
+    pi
+      .getActiveTools()
+      .map((tool) => toolName(tool))
+      .filter((name): name is string => typeof name === "string"),
+  );
 
   if (prefersApplyPatch(modelId)) {
     activeToolNames.delete("edit");
@@ -116,11 +132,13 @@ export default function applyPatchExtension(pi: ExtensionAPI) {
     ],
     parameters: APPLY_PATCH_PARAMETERS,
 
-    prepareArguments(args: Record<string, unknown>) {
-      if (typeof args.patchText === "string") return args;
+    prepareArguments(args: unknown) {
+      if (!isRecord(args)) return { patchText: "" };
+      if (typeof args.patchText === "string")
+        return { patchText: args.patchText };
       if (typeof args.patch === "string")
-        return { ...args, patchText: args.patch };
-      return args;
+        return { patchText: args.patch };
+      return { patchText: "" };
     },
 
     async execute(_toolCallId, params, _signal, _onUpdate, ctx) {
